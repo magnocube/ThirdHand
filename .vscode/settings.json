@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "freertos.h": "c",
+        "stdio.h": "c",
+        "esp_spi_flash.h": "c",
+        "stdbool.h": "c",
+        "stddef.h": "c",
+        "myphy.h": "c",
+        "phy.h": "c",
+        "*.inc": "cpp",
+        "fstream": "h"
+    },
+    
+
+}

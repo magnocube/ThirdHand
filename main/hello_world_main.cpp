@@ -13,6 +13,10 @@
 #include "esp_spi_flash.h"
 
 
+extern "C" { 	
+	void app_main();
+}
+
 void app_main()
 {
     printf("Hello world!\n");
