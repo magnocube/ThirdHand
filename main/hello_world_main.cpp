@@ -22,9 +22,7 @@ extern "C" {
 void app_main()
 {
 
-    Joystick j(10,11,12,13);
-    j.UpdateAxles();
-    Joystick::AxleResults ref = j.getResults();
+
 
 
     printf("Hello world!\n");

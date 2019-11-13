@@ -1,10 +1,15 @@
 #include "joystick.h"
-Joystick::Joystick(int axleX,int axleY, int axleZ, int axleGrabber){
 
-}
-void Joystick::UpdateAxles(){
 
+Joystick::Joystick(uint8_t inputPin){
+    _inputPin = inputPin;
+
+
+    //setup pin as analog input. and do a test read
 }
-Joystick::AxleResults& Joystick::getResults(){    
-    return localAxleResult;
+void Joystick::updatePosition(){
+    
+}
+uint32_t Joystick::getPosition(){
+    return 0;
 }

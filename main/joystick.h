@@ -1,20 +1,11 @@
 #pragma once
+
 #include <stdint.h>
-
-
-
 class Joystick{
     public:
-        struct AxleResults{ // simple struct for returning all the new axle values
-            int32_t x,y,z,grabber=0;
-        };
-
-    
-        Joystick(int axleX,int axleY, int axleZ, int axleGrabber);
-        void UpdateAxles();
-        AxleResults& getResults();
-
+        Joystick(uint8_t inputPin);
+        void updatePosition();
+        uint32_t getPosition();
     private:
-        uint8_t pinAxleX, pinAxleY, pinAxleZ, pinAxleGrabber = 0;
-        AxleResults localAxleResult;
+        uint8_t _inputPin = -1;
 };
