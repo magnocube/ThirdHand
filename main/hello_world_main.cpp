@@ -13,12 +13,20 @@
 #include "esp_spi_flash.h"
 
 
+#include "joystick.h"
+
 extern "C" { 	
 	void app_main();
 }
 
 void app_main()
 {
+
+    Joystick j(10,11,12,13);
+    j.UpdateAxles();
+    Joystick::AxleResults ref = j.getResults();
+
+
     printf("Hello world!\n");
 
     /* Print chip information */
