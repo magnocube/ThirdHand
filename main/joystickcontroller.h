@@ -4,7 +4,7 @@
 #include <vector> 
 
 
-class Joystickcontroller{
+class Joystickcontroller{ // currently only supports adc1 by design
     public:
         Joystickcontroller();
         void updateJoysticks();

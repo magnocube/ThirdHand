@@ -14,6 +14,7 @@
 
 
 #include "joystick.h"
+#include "joystickcontroller.h"
 
 extern "C" { 	
 	void app_main();
@@ -21,8 +22,12 @@ extern "C" {
 
 void app_main()
 {
-
-
+    Joystickcontroller j;
+    j.addJoystick(new Joystick(ADC1_CHANNEL_0));
+    j.addJoystick(new Joystick(ADC1_CHANNEL_1));
+    j.addJoystick(new Joystick(ADC1_CHANNEL_3));
+    j.addJoystick(new Joystick(ADC1_CHANNEL_4));
+    j.updateJoysticks();
 
 
     printf("Hello world!\n");

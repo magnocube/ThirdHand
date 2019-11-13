@@ -1,9 +1,9 @@
 #include "joystick.h"
 
 
-Joystick::Joystick(uint8_t inputPin){
-    _inputPin = inputPin;
-
+Joystick::Joystick(adc1_channel_t adcChannel){
+    _adcChannel = adcChannel;
+    int val = adc1_get_raw(_adcChannel);
 
     //setup pin as analog input. and do a test read
 }

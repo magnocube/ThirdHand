@@ -1,11 +1,14 @@
 #pragma once
 
 #include <stdint.h>
+#include <driver/adc.h>
+
 class Joystick{
     public:
-        Joystick(uint8_t inputPin);
+        Joystick(adc1_channel_t adcChannel);
         void updatePosition();
         uint32_t getPosition();
     private:
-        uint8_t _inputPin = -1;
+        adc1_channel_t _adcChannel;
+        
 };
