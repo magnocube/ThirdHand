@@ -6,6 +6,7 @@
                 "${workspaceFolder}/**",
                 "${env:IDF_PATH}/components/**",
                 "C:/IDF_TOOLS/**",
+                "C:/esp_tools/**",
                 "${workspaceRoot}/build/include"                
             ],
             "defines": [
