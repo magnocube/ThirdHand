@@ -23,8 +23,8 @@ extern "C" {
 void app_main()
 {
   
-    Joystick *stickX =        new Joystick(ADC1_CHANNEL_6,1903);
-    Joystick *stickY =        new Joystick(ADC1_CHANNEL_7,2000);
+    Joystick *stickX =        new Joystick(ADC1_CHANNEL_6,1900);
+    Joystick *stickY =        new Joystick(ADC1_CHANNEL_7,1717);
     Joystick *stickZ =        new Joystick(ADC1_CHANNEL_0,2000);
     Joystick *stickGrabber =  new Joystick(ADC1_CHANNEL_3,2000);
 
@@ -36,32 +36,11 @@ void app_main()
 
     while(1){
         j.updateJoysticks();
-        printf("%d",stickX->getRelativeSpeed());
+        printf("X: %d,  Y: %d\n",stickX->getRelativeSpeed(),stickY->getRelativeSpeed());
         vTaskDelay(10 / portTICK_PERIOD_MS);
     }
     
 
-
-    printf("Hello world!\n");
-
-    /* Print chip information */
-    esp_chip_info_t chip_info;
-    esp_chip_info(&chip_info);
-    printf("This is ESP32 chip with %d CPU cores, WiFi%s%s, ",
-            chip_info.cores,
-            (chip_info.features & CHIP_FEATURE_BT) ? "/BT" : "",
-            (chip_info.features & CHIP_FEATURE_BLE) ? "/BLE" : "");
-
-    printf("silicon revision %d, ", chip_info.revision);
-
-    printf("%dMB %s flash\n", spi_flash_get_chip_size() / (1024 * 1024),
-            (chip_info.features & CHIP_FEATURE_EMB_FLASH) ? "embedded" : "external");
-
-    for (int i = 10; i >= 0; i--) {
-        printf("Restarting in %d seconds...\n", i);
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-    }
-    printf("Restarting now.\n");
-    fflush(stdout);
+    printf("Restarting now.\n");  
     esp_restart();
 }

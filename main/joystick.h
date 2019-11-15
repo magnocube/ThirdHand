@@ -15,5 +15,5 @@ class Joystick{
         int32_t currentPosition;
         int32_t centerPosition;
         int32_t calibratedPosition;
-        const int deathZone = 5;
+        const int deathZone = 20;
 };
