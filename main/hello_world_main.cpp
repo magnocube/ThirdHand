@@ -22,12 +22,24 @@ extern "C" {
 
 void app_main()
 {
+  
+    Joystick *stickX =        new Joystick(ADC1_CHANNEL_6,1903);
+    Joystick *stickY =        new Joystick(ADC1_CHANNEL_7,2000);
+    Joystick *stickZ =        new Joystick(ADC1_CHANNEL_0,2000);
+    Joystick *stickGrabber =  new Joystick(ADC1_CHANNEL_3,2000);
+
     Joystickcontroller j;
-    j.addJoystick(new Joystick(ADC1_CHANNEL_0));
-    j.addJoystick(new Joystick(ADC1_CHANNEL_1));
-    j.addJoystick(new Joystick(ADC1_CHANNEL_3));
-    j.addJoystick(new Joystick(ADC1_CHANNEL_4));
-    j.updateJoysticks();
+    j.addJoystick(stickX);
+    j.addJoystick(stickY);
+    j.addJoystick(stickZ);
+    j.addJoystick(stickGrabber);
+
+    while(1){
+        j.updateJoysticks();
+        printf("%d",stickX->getRelativeSpeed());
+        vTaskDelay(10 / portTICK_PERIOD_MS);
+    }
+    
 
 
     printf("Hello world!\n");
