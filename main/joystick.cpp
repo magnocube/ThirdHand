@@ -17,9 +17,6 @@ Joystick::Joystick(adc1_channel_t adcChannel,int centerValue){
 void Joystick::updatePosition(){
     currentPosition = adc1_get_raw(_adcChannel);
     calibratedPosition = (int)((currentPosition*2+calibratedPosition*8)/10.0);
-    
-    // if(_adcChannel == ADC1_CHANNEL_7) //only 1 for debugging
-    //     ESP_LOGI("Y","channel %d,value: %d",_adcChannel,calibratedPosition);
 }
 
 uint32_t Joystick::getValue(){
@@ -48,13 +45,3 @@ uint32_t Joystick::getRelativeSpeed(){
 }
 
 
-//   int i = centerPosition - calibratedPosition;
-//     if(i<deathZone && i >-deathZone){
-//         i = 0;
-//     }
-//     if(i > 0){
-//         return map(i, deathZone,centerPosition,0,1024);
-//     }else{
-//         return map(i, -4095+centerPosition-deathZone,0,-1024,0);
-//     }
-    

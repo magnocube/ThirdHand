@@ -16,17 +16,19 @@
 #include "joystick.h"
 #include "joystickcontroller.h"
 
+#include "config.h"
+
 extern "C" { 	
-	void app_main();
+	void app_main(); 
 }
 
 void app_main()
 {
   
-    Joystick *stickX =        new Joystick(ADC1_CHANNEL_6,1900);
-    Joystick *stickY =        new Joystick(ADC1_CHANNEL_7,1717);
-    Joystick *stickZ =        new Joystick(ADC1_CHANNEL_0,2000);
-    Joystick *stickGrabber =  new Joystick(ADC1_CHANNEL_3,2000);
+    Joystick *stickX =        new Joystick(STICK_X_ADC_CHANNEL,STICK_X_CENTER_VALUE);
+    Joystick *stickY =        new Joystick(STICK_Y_ADC_CHANNEL,STICK_Y_CENTER_VALUE);
+    Joystick *stickZ =        new Joystick(STICK_Z_ADC_CHANNEL,STICK_Z_CENTER_VALUE);
+    Joystick *stickGrabber =  new Joystick(STICK_GRABBER_ADC_CHANNEL,STICK_GRABBER_CENTER_VALUE);
 
     Joystickcontroller j;
     j.addJoystick(stickX);
@@ -36,7 +38,7 @@ void app_main()
 
     while(1){
         j.updateJoysticks();
-        printf("X: %d,  Y: %d\n",stickX->getRelativeSpeed(),stickY->getRelativeSpeed());
+        printf("X: %d,  Y: %d,  Z: %d,  G: %d\n",stickX->getRelativeSpeed(),stickY->getRelativeSpeed(),stickZ->getRelativeSpeed(),stickGrabber->getRelativeSpeed());
         vTaskDelay(10 / portTICK_PERIOD_MS);
     }
     
