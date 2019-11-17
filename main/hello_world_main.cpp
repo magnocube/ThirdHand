@@ -15,6 +15,7 @@
 
 #include "joystick.h"
 #include "joystickcontroller.h"
+#include "motorController.h"
 
 #include "config.h"
 
@@ -24,7 +25,10 @@ extern "C" {
 
 void app_main()
 {
-  
+    motorContoller::initPerhepirals();
+    motorContoller::initPerhepirals();
+    motorContoller::initPerhepirals();
+
     Joystick *stickX =        new Joystick(STICK_X_ADC_CHANNEL,STICK_X_CENTER_VALUE);
     Joystick *stickY =        new Joystick(STICK_Y_ADC_CHANNEL,STICK_Y_CENTER_VALUE);
     Joystick *stickZ =        new Joystick(STICK_Z_ADC_CHANNEL,STICK_Z_CENTER_VALUE);

@@ -20,3 +20,5 @@
 #define LIMIT_SWITCH_X                  2
 #define LIMIT_SWITCH_Y                  4
 #define LIMIT_SWITCH_Z                  5
+
+#define SPEED_RESOLUTION                1024  //resolution at the cost of memory
