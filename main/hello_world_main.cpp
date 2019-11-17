@@ -26,8 +26,7 @@ extern "C" {
 void app_main()
 {
     motorContoller::initPerhepirals();
-    motorContoller::initPerhepirals();
-    motorContoller::initPerhepirals();
+    motorContoller::driveMotors();
 
     Joystick *stickX =        new Joystick(STICK_X_ADC_CHANNEL,STICK_X_CENTER_VALUE);
     Joystick *stickY =        new Joystick(STICK_Y_ADC_CHANNEL,STICK_Y_CENTER_VALUE);

@@ -4,9 +4,11 @@
 
 
 namespace motorContoller{
+    /*function prototypes and (private) variables*/
         void stepX();
         void stepY();
         void stepZ();
+        void doNothing();
         void resetStep();//the steps will only set the pin high, this will reset all pins to low
         void (*arr[SPEED_RESOLUTION*3])() = {};
         void (*functptrs[3])() = {stepX,stepY,stepZ};
@@ -16,21 +18,22 @@ namespace motorContoller{
 
     void initPerhepirals(){        
         for(auto &a:arr){
-            a = stepY;
+            a = doNothing;
         }
-        arr[1] = stepX;
-        arr[3] = stepZ;
+        gpio
 
-        for(auto &a:arr){
-            a();
-        }
-        ESP_LOGI("motorController","data: X: %d,   Y: %d,   Z: %d",X.currentPosition,Y.currentPosition,Z.currentPosition);
+
+       
+        
     }
     void setSpeed(int xSpeed, int ySpeed, int zSpeed){
         
     }
     void driveMotors(){
-        
+         for(auto &a:arr){
+            a();
+        }
+        ESP_LOGI("motorController","data: X: %d,   Y: %d,   Z: %d",X.currentPosition,Y.currentPosition,Z.currentPosition);
     }
     void calibrateToHome(){
         
@@ -47,6 +50,9 @@ namespace motorContoller{
     void stepZ(){
         //ESP_LOGI("M","Z");
         Z.currentPosition++;
+    }
+    void doNothing(){
+
     }
     void resetStep(){
         
