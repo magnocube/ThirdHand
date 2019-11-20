@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include "config.h"
 struct stepperData{
-    int32_t currentPosition;
-    int8_t lastSpeed;
+    int currentPosition;
+    int currentSpeed;
 };
 
 namespace motorContoller{

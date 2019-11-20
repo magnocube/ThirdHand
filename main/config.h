@@ -21,4 +21,4 @@
 #define LIMIT_SWITCH_Y                  (gpio_num_t)4
 #define LIMIT_SWITCH_Z                  (gpio_num_t)5
 
-#define SPEED_RESOLUTION                1024  //resolution at the cost of memory
+#define SPEED_RESOLUTION                255  //resolution at the cost of memory and responsiveness

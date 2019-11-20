@@ -26,7 +26,7 @@ extern "C" {
 void app_main()
 {
     motorContoller::initPerhepirals();
-    motorContoller::driveMotors();
+    
 
     Joystick *stickX =        new Joystick(STICK_X_ADC_CHANNEL,STICK_X_CENTER_VALUE);
     Joystick *stickY =        new Joystick(STICK_Y_ADC_CHANNEL,STICK_Y_CENTER_VALUE);
@@ -41,8 +41,13 @@ void app_main()
 
     while(1){
         j.updateJoysticks();
-        printf("X: %d,  Y: %d,  Z: %d,  G: %d\n",stickX->getRelativeSpeed(),stickY->getRelativeSpeed(),stickZ->getRelativeSpeed(),stickGrabber->getRelativeSpeed());
-        vTaskDelay(10 / portTICK_PERIOD_MS);
+        //printf("X: %d,  Y: %d,  Z: %d,  G: %d\n",stickX->getRelativeSpeed(),stickY->getRelativeSpeed(),stickZ->getRelativeSpeed(),stickGrabber->getRelativeSpeed());
+        motorContoller::setSpeed(stickX->getRelativeSpeed(),stickY->getRelativeSpeed(),stickZ->getRelativeSpeed());
+        for(int i =0;i<1;i++){
+            motorContoller::driveMotors();
+        }
+        
+        //vTaskDelay(10 / portTICK_PERIOD_MS);
     }
     
 

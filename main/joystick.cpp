@@ -1,5 +1,6 @@
 #include "joystick.h"
 #include "esp_log.h"
+#include "config.h"
 
 long map(long x, long in_min, long in_max, long out_min, long out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
@@ -30,13 +31,13 @@ uint32_t Joystick::getRelativeSpeed(){
     /*a speed that will go from -1024 to 1024 based on the position of the joystick*/
    if(calibratedPosition > centerPosition){
        if(calibratedPosition > centerPosition + deathZone){
-           return map(calibratedPosition,centerPosition+deathZone,4096,0,1024);
+           return map(calibratedPosition,centerPosition+deathZone,4096,0,SPEED_RESOLUTION);
        } else{
            return 0;
        }
    }else{
        if(calibratedPosition < centerPosition - deathZone){
-           return map(calibratedPosition,centerPosition-deathZone,0,0,-1024);
+           return map(calibratedPosition,centerPosition-deathZone,0,0,-SPEED_RESOLUTION);
        } else{
            return 0;
        }
