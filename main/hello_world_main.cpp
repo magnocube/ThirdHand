@@ -28,10 +28,10 @@ void app_main()
     motorContoller::initPerhepirals();
     
 
-    Joystick *stickX =        new Joystick(STICK_X_ADC_CHANNEL,STICK_X_CENTER_VALUE);
-    Joystick *stickY =        new Joystick(STICK_Y_ADC_CHANNEL,STICK_Y_CENTER_VALUE);
-    Joystick *stickZ =        new Joystick(STICK_Z_ADC_CHANNEL,STICK_Z_CENTER_VALUE);
-    Joystick *stickGrabber =  new Joystick(STICK_GRABBER_ADC_CHANNEL,STICK_GRABBER_CENTER_VALUE);
+    Joystick *stickX =        new Joystick(STICK_X_ADC_CHANNEL,STICK_X_CENTER_VALUE,MAX_X_SPEED);
+    Joystick *stickY =        new Joystick(STICK_Y_ADC_CHANNEL,STICK_Y_CENTER_VALUE,MAX_Y_SPEED);
+    Joystick *stickZ =        new Joystick(STICK_Z_ADC_CHANNEL,STICK_Z_CENTER_VALUE,MAX_Z_SPEED);
+    Joystick *stickGrabber =  new Joystick(STICK_GRABBER_ADC_CHANNEL,STICK_GRABBER_CENTER_VALUE,0);
 
     Joystickcontroller j;
     j.addJoystick(stickX);

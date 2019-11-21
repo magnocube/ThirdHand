@@ -30,7 +30,7 @@ namespace motorContoller{
                 arr[i] = doNothing;
             }
         }
-        gpio_pad_select_gpio((gpio_num_t)0);
+        gpio_pad_select_gpio(STALL_PIN);
         gpio_pad_select_gpio(PIN_DIR_X);
         gpio_pad_select_gpio(PIN_DIR_Y);
         gpio_pad_select_gpio(PIN_DIR_Z);
@@ -41,7 +41,7 @@ namespace motorContoller{
         gpio_pad_select_gpio(LIMIT_SWITCH_Y);
         gpio_pad_select_gpio(LIMIT_SWITCH_Z);
 
-        gpio_set_direction((gpio_num_t)0,GPIO_MODE_OUTPUT);
+        gpio_set_direction(STALL_PIN,GPIO_MODE_OUTPUT);
         gpio_set_direction(PIN_DIR_Y,GPIO_MODE_OUTPUT);
         gpio_set_direction(PIN_DIR_Z,GPIO_MODE_OUTPUT);
         gpio_set_direction(PIN_DIR_X,GPIO_MODE_OUTPUT);
@@ -140,14 +140,14 @@ namespace motorContoller{
     }
     void doNothing(){
         N.currentPosition++;
-        gpio_set_level((gpio_num_t)0,1);
+        gpio_set_level(STALL_PIN,1);
     }
     void resetStep(){
         R.currentPosition++;
         gpio_set_level(PIN_STEPPER_X,0);
         gpio_set_level(PIN_STEPPER_Y,0);
         gpio_set_level(PIN_STEPPER_Z,0);
-        gpio_set_level((gpio_num_t)0,0);
+        gpio_set_level(STALL_PIN,0);
     }
 
 
