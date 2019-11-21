@@ -23,8 +23,9 @@
 
 #define STALL_PIN                       (gpio_num_t)0
 
-#define SPEED_RESOLUTION                5000  //resolution at the cost of memory and responsiveness
-#define MAX_X_SPEED                     2
-#define MAX_Y_SPEED                     2
-#define MAX_Z_SPEED                     300
-#define DEATHBAND                       50
+#define SPEED_RESOLUTION                2500  //resolution at the cost of memory and responsiveness
+#define MAX_X_SPEED                     130
+#define MAX_Y_SPEED                     200
+#define MAX_Z_SPEED                     150
+#define DEATHBAND                       55
+

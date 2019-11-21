@@ -31,13 +31,15 @@ uint32_t Joystick::getRelativeSpeed(){
     /*a speed that will go from -1024 to 1024 based on the position of the joystick*/
    if(calibratedPosition > centerPosition){
        if(calibratedPosition > centerPosition + DEATHBAND){
-           return map(calibratedPosition,centerPosition+deathZone,4096,0,_maxSpeed);
+           float per = (float)map(calibratedPosition,centerPosition+deathZone,4096,0,_maxSpeed);
+           return (1+0.000018*per*per*per); //0-500 speed           
        } else{
            return 0;
        }
    }else{
        if(calibratedPosition < centerPosition - DEATHBAND){
-           return map(calibratedPosition,centerPosition-deathZone,0,0,-_maxSpeed);
+           float per = (float)map(calibratedPosition,centerPosition-deathZone,0,0,-_maxSpeed);
+           return (-1 + 0.000018*per*per*per); //0-500 speed  
        } else{
            return 0;
        }
