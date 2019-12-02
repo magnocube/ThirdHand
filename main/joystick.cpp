@@ -11,7 +11,7 @@ Joystick::Joystick(adc1_channel_t adcChannel,int centerValue,int maxSpeed){
     _maxSpeed = maxSpeed;
     centerPosition = centerValue;
     calibratedPosition = centerValue;
-    ESP_LOGI("Joystick","new Joystick created on adcChannel %d with centervalue %d",adcChannel,centerPosition);
+    //ESP_LOGI("Joystick","new Joystick created on adcChannel %d with centervalue %d",adcChannel,centerPosition);
 
 }
 
