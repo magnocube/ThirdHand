@@ -15,6 +15,7 @@ namespace motorContoller{
         void (*arr[SPEED_RESOLUTION*4])() = {};
         void (*functptrs[3])() = {stepX,stepY,stepZ};
         stepperData X, Y, Z,N,R;
+        int dirX, dirY, dirZ = 0;
 
 
 
@@ -54,25 +55,40 @@ namespace motorContoller{
        
         
     }
+    int getX(){
+        return X.currentPosition;
+    }
+    int getY(){
+        return Y.currentPosition;
+    }
+    int getZ(){
+        return Z.currentPosition;
+    }
     void setSpeed(int xSpeed, int ySpeed, int zSpeed){
         X.currentSpeed = abs(xSpeed);
         Y.currentSpeed = abs(ySpeed);
         Z.currentSpeed = abs(zSpeed);
 
         if(xSpeed >0){
+            dirX = 1;
             gpio_set_level(PIN_DIR_X,1);
         } else{
+            dirX = -1;
             gpio_set_level(PIN_DIR_X,0);
         }
         if(ySpeed >0){
-            gpio_set_level(PIN_DIR_Y,1);
-        } else{
+            dirY = 1;
             gpio_set_level(PIN_DIR_Y,0);
+        } else{
+            dirY = -1;
+            gpio_set_level(PIN_DIR_Y,1);
         }
         if(zSpeed >0){
-            gpio_set_level(PIN_DIR_Z,1);
-        } else{
+            dirZ = 1;
             gpio_set_level(PIN_DIR_Z,0);
+        } else{
+            dirZ = -1;
+            gpio_set_level(PIN_DIR_Z,1);
         }
 
         //reset the array  ... motors should not be moving, or it can result in either errors or not the right position
@@ -125,17 +141,17 @@ namespace motorContoller{
 
     void stepX(){
     //ESP_LOGI("M","X");
-        X.currentPosition++;
+        X.currentPosition+=dirX;
         gpio_set_level(PIN_STEPPER_X,1);
     }
     void stepY(){
         //ESP_LOGI("M","Y");
-        Y.currentPosition++;
+        Y.currentPosition+=dirY;
         gpio_set_level(PIN_STEPPER_Y,1);
     }
     void stepZ(){
         //ESP_LOGI("M","Z");
-        Z.currentPosition++;
+        Z.currentPosition+=dirZ;
         gpio_set_level(PIN_STEPPER_Z,1);
     }
     void doNothing(){
@@ -147,7 +163,10 @@ namespace motorContoller{
         gpio_set_level(PIN_STEPPER_X,0);
         gpio_set_level(PIN_STEPPER_Y,0);
         gpio_set_level(PIN_STEPPER_Z,0);
-        gpio_set_level(STALL_PIN,0);
+        for(int i = 0; i < SLOWIFIER ; i++){
+            gpio_set_level(STALL_PIN,0);
+        }
+        
     }
 
 

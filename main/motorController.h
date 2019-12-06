@@ -13,5 +13,7 @@ namespace motorContoller{
         void driveMotors();     //will iterate over the function pointer array to set the speeds
         void calibrateToHome(); //blocking
   
-       
+       int getX();
+       int getY();
+       int getZ();
 };

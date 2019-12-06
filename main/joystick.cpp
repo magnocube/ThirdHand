@@ -5,7 +5,8 @@
 long map(long x, long in_min, long in_max, long out_min, long out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
-
+#define max(a,b) ((a)>(b)?(a):(b))
+#define min(a,b) ((a)<(b)?(a):(b))
 Joystick::Joystick(adc1_channel_t adcChannel,int centerValue,int maxSpeed){
     _adcChannel = adcChannel;
     _maxSpeed = maxSpeed;
@@ -32,14 +33,16 @@ uint32_t Joystick::getRelativeSpeed(){
    if(calibratedPosition > centerPosition){
        if(calibratedPosition > centerPosition + DEATHBAND){
            float per = (float)map(calibratedPosition,centerPosition+deathZone,4096,0,_maxSpeed);
-           return (1+0.000018*per*per*per); //0-500 speed           
+           //return per;
+           return min((1+0.000019*per*per*per),_maxSpeed); //0-500 speed           
        } else{
            return 0;
        }
    }else{
        if(calibratedPosition < centerPosition - DEATHBAND){
            float per = (float)map(calibratedPosition,centerPosition-deathZone,0,0,-_maxSpeed);
-           return (-1 + 0.000018*per*per*per); //0-500 speed  
+           //return per;
+           return max((-1 + 0.000019*per*per*per),-_maxSpeed); //0-500 speed  
        } else{
            return 0;
        }

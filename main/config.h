@@ -1,10 +1,10 @@
-#define STICK_X_ADC_CHANNEL             ADC1_CHANNEL_6
-#define STICK_Y_ADC_CHANNEL             ADC1_CHANNEL_7
+#define STICK_Y_ADC_CHANNEL             ADC1_CHANNEL_6
+#define STICK_X_ADC_CHANNEL             ADC1_CHANNEL_7
 #define STICK_Z_ADC_CHANNEL             ADC1_CHANNEL_0
 #define STICK_GRABBER_ADC_CHANNEL       ADC1_CHANNEL_3
 
-#define STICK_X_CENTER_VALUE            1900
-#define STICK_Y_CENTER_VALUE            1717
+#define STICK_Y_CENTER_VALUE            1900
+#define STICK_X_CENTER_VALUE            1717
 #define STICK_Z_CENTER_VALUE            1850
 #define STICK_GRABBER_CENTER_VALUE      0
 
@@ -23,9 +23,11 @@
 
 #define STALL_PIN                       (gpio_num_t)0
 
-#define SPEED_RESOLUTION                2500  //resolution at the cost of memory and responsiveness
-#define MAX_X_SPEED                     130  //WARNING. these speeds are only a indication... there will be some heavy (quadratic) mathematics that determine the real speed
-#define MAX_Y_SPEED                     230
-#define MAX_Z_SPEED                     200
+#define SPEED_RESOLUTION                512  //resolution at the cost of memory and responsiveness
+#define MAX_X_SPEED                     256  //WARNING. these speeds are only a indication... there will be some heavy (quadratic) mathematics that determine the real speed
+#define MAX_Y_SPEED                     512
+#define MAX_Z_SPEED                     256
 #define DEATHBAND                       55
+#define SLOWIFIER                       200
 
+#define PIN_LED_LIGHT                   (gpio_num_t)14
