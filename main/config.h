@@ -23,10 +23,10 @@
 
 #define STALL_PIN                       (gpio_num_t)0
 
-#define SPEED_RESOLUTION                512  //resolution at the cost of memory and responsiveness
-#define MAX_X_SPEED                     256  //WARNING. these speeds are only a indication... there will be some heavy (quadratic) mathematics that determine the real speed
-#define MAX_Y_SPEED                     512
-#define MAX_Z_SPEED                     256
+#define SPEED_RESOLUTION                1024  //resolution at the cost of memory and responsiveness
+#define MAX_X_SPEED                     512  //WARNING. these speeds are only a indication... there will be some heavy (quadratic) mathematics that determine the real speed
+#define MAX_Y_SPEED                     1024
+#define MAX_Z_SPEED                     512
 #define DEATHBAND                       55
 #define SLOWIFIER                       200
 

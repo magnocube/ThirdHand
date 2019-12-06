@@ -17,7 +17,7 @@ Joystick::Joystick(adc1_channel_t adcChannel,int centerValue,int maxSpeed){
 }
 
 void Joystick::updatePosition(){
-    currentPosition = adc1_get_raw(_adcChannel);
+    currentPosition = (adc1_get_raw(_adcChannel)+adc1_get_raw(_adcChannel)+adc1_get_raw(_adcChannel)+adc1_get_raw(_adcChannel))/4;
     calibratedPosition = (int)((currentPosition*2+calibratedPosition*8)/10.0);
 }
 
