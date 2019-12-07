@@ -43,7 +43,7 @@ static void i2c_master_init(void)
     conf.sda_pullup_en = GPIO_PULLUP_ENABLE; 
     conf.scl_io_num = (gpio_num_t)22;
     conf.scl_pullup_en = GPIO_PULLUP_ENABLE;  
-    conf.master.clk_speed = 100000;
+    conf.master.clk_speed = 400000;
     i2c_param_config(i2c_master_port, &conf);
     i2c_driver_install(i2c_master_port, conf.mode,
                        64,
@@ -283,6 +283,19 @@ void task1( void * pvParameters ){
     }
 }
 void task2( void * pvParameters ){
+    
+     while(1){
+        // std::string a = "x";
+        // a.
+   
+        j.updateJoysticks();
+        //printf("X: %d,  Y: %d,  Z: %d,  G: %d\n",stickX->getRelativeSpeed(),stickY->getRelativeSpeed(),stickZ->getRelativeSpeed(),stickGrabber->getRelativeSpeed());
+        motorContoller::setSpeed(stickX->getRelativeSpeed(),stickY->getRelativeSpeed(),stickZ->getRelativeSpeed());
+        vTaskDelay(25 / portTICK_PERIOD_MS);
+    }
+
+}
+void task3( void * pvParameters ){
     i2c_master_init();
     i2c_port_t i2c_num = (i2c_port_t)0;
     uint8_t address = 0x27;
@@ -315,17 +328,16 @@ void task2( void * pvParameters ){
     while(1){
         // std::string a = "x";
         // a.
+        i2c_lcd1602_clear(lcd_info);
    
-        sprintf(firstLine, "X:%d   Y:%d!", motorContoller::getX(),motorContoller::getY());
-
-        i2c_lcd1602_move_cursor(lcd_info, 0, 0);        
-        i2c_lcd1602_write_string(lcd_info,"                ");
+        sprintf(firstLine, "X:%d", motorContoller::getX());
         i2c_lcd1602_move_cursor(lcd_info, 0, 0);        
         i2c_lcd1602_write_string(lcd_info,firstLine);
-        j.updateJoysticks();
-        //printf("X: %d,  Y: %d,  Z: %d,  G: %d\n",stickX->getRelativeSpeed(),stickY->getRelativeSpeed(),stickZ->getRelativeSpeed(),stickGrabber->getRelativeSpeed());
-        motorContoller::setSpeed(stickX->getRelativeSpeed(),stickY->getRelativeSpeed(),stickZ->getRelativeSpeed());
-        vTaskDelay(10 / portTICK_PERIOD_MS);
+        sprintf(firstLine, "Y:%d", motorContoller::getY());
+        i2c_lcd1602_move_cursor(lcd_info, 0, 1);        
+        i2c_lcd1602_write_string(lcd_info,firstLine);
+    
+        vTaskDelay(100 / portTICK_PERIOD_MS);
     }
     
 }
@@ -348,7 +360,8 @@ void app_main()
     j.addJoystick(stickGrabber);
 
     xTaskCreatePinnedToCore(task1, "motorTask", SPEED_RESOLUTION*5, NULL, 100, NULL,1 );
-    xTaskCreatePinnedToCore(task2, "otherTask", 2048, NULL, 100, NULL,0 );
+    xTaskCreatePinnedToCore(task2, "stickTask", 2048, NULL, 1, NULL,0 );
+    xTaskCreatePinnedToCore(task3, "screenTask", 2048, NULL, 2, NULL,0 );
     
 
     while(1){
