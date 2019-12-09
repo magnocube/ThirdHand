@@ -298,11 +298,11 @@ void task3( void * pvParameters ){ // handles the display
     int address = 0x27;
     
     //make the menus
-    MenuStruct mainMenu =   {std::string("Top Level Menu"),std::string("bottom Menu"),&address,0,255,1,nullptr,nullptr,nullptr,nullptr};
-    MenuStruct speedMenu =  {std::string("select speeds"),std::string("navigate down"),&address,0,255,1,nullptr,nullptr,nullptr,nullptr};
-    MenuStruct speedX =     {std::string("speed x"),std::string("value: 34"),&address,0,255,1,nullptr,nullptr,nullptr,nullptr};
-    MenuStruct speedY =     {std::string("speed y"),std::string("value: 234"),&address,0,255,1,nullptr,nullptr,nullptr,nullptr};
-    MenuStruct speedZ =     {std::string("speed z"),std::string("value: 233"),&address,0,255,1,nullptr,nullptr,nullptr,nullptr};
+    MenuStruct mainMenu =   {std::string("Top Level Menu"), std::string("bottom Menu"),     &address,0,255,1,nullptr,nullptr,nullptr,nullptr};
+    MenuStruct speedMenu =  {std::string("select speeds"),  std::string("navigate down"),   &address,0,255,1,nullptr,nullptr,nullptr,nullptr};
+    MenuStruct speedX =     {std::string("speed x"),        std::string("value: 34"),       &address,0,255,1,nullptr,nullptr,nullptr,nullptr};
+    MenuStruct speedY =     {std::string("speed y"),        std::string("value: 234"),      &address,0,255,1,nullptr,nullptr,nullptr,nullptr};
+    MenuStruct speedZ =     {std::string("speed z"),        std::string("value: 233"),      &address,0,255,1,nullptr,nullptr,nullptr,nullptr};
 
     //link the menus
     mainMenu.rightMenuItem =  &speedMenu;
@@ -314,6 +314,7 @@ void task3( void * pvParameters ){ // handles the display
     //instantiate and set the default menu. (and i2c address)
     LCDMenu menu(&mainMenu, address); 
     
+    //simulate button presses
     while(1){  
         vTaskDelay(2000 / portTICK_PERIOD_MS);
         menu.input(inputDirection::RIGHT);
