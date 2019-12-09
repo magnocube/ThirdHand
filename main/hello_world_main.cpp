@@ -23,9 +23,8 @@
 #include "esp_log.h"
 #define TAG "I2C:"
 
-#include "smbus.h"
-#include "i2c-lcd1602.h"
-#include <string>
+#include "LCD.h"
+#include <driver/i2c.h>
 
 extern "C" { 	
 	void app_main(); 
@@ -295,50 +294,48 @@ void task2( void * pvParameters ){
     }
 
 }
-void task3( void * pvParameters ){
-    i2c_master_init();
-    i2c_port_t i2c_num = (i2c_port_t)0;
-    uint8_t address = 0x27;
-
-    // Set up the SMBus
-    smbus_info_t * smbus_info = smbus_malloc();
-    smbus_init(smbus_info, i2c_num, address);
-    smbus_set_timeout(smbus_info, 1000 / portTICK_RATE_MS);
-
-    // Set up the LCD1602 device with backlight off
-    i2c_lcd1602_info_t * lcd_info = i2c_lcd1602_malloc();
-    i2c_lcd1602_init(lcd_info, smbus_info, true);
-
-
-    // turn on backlight
-    ESP_LOGI(TAG, "backlight on");
-    i2c_lcd1602_set_backlight(lcd_info, true);
-    ESP_LOGI(TAG, "cursor off");
-   
-    i2c_lcd1602_set_cursor(lcd_info, false);
-    i2c_lcd1602_move_cursor(lcd_info, 0, 0);
-    i2c_lcd1602_write_string(lcd_info,"  Hello  World");
-    i2c_lcd1602_move_cursor(lcd_info, 0, 1);
-    i2c_lcd1602_write_string(lcd_info,"   Third Hand");
-    vTaskDelay(2000 / portTICK_PERIOD_MS);
-
-    // Allocates storage
-    char *firstLine = (char*)malloc(17 * sizeof(char));
-
-    while(1){
-        // std::string a = "x";
-        // a.
-        i2c_lcd1602_clear(lcd_info);
-   
-        sprintf(firstLine, "X:%d", motorContoller::getX());
-        i2c_lcd1602_move_cursor(lcd_info, 0, 0);        
-        i2c_lcd1602_write_string(lcd_info,firstLine);
-        sprintf(firstLine, "Y:%d", motorContoller::getY());
-        i2c_lcd1602_move_cursor(lcd_info, 0, 1);        
-        i2c_lcd1602_write_string(lcd_info,firstLine);
+void task3( void * pvParameters ){ // handles the display   
+    int address = 0x27;
     
-        vTaskDelay(100 / portTICK_PERIOD_MS);
+    //make the menus
+    MenuStruct mainMenu =   {std::string("Top Level Menu"),std::string("bottom Menu"),&address,0,255,1,nullptr,nullptr,nullptr,nullptr};
+    MenuStruct speedMenu =  {std::string("select speeds"),std::string("navigate down"),&address,0,255,1,nullptr,nullptr,nullptr,nullptr};
+    MenuStruct speedX =     {std::string("speed x"),std::string("value: 34"),&address,0,255,1,nullptr,nullptr,nullptr,nullptr};
+    MenuStruct speedY =     {std::string("speed y"),std::string("value: 234"),&address,0,255,1,nullptr,nullptr,nullptr,nullptr};
+    MenuStruct speedZ =     {std::string("speed z"),std::string("value: 233"),&address,0,255,1,nullptr,nullptr,nullptr,nullptr};
+
+    //link the menus
+    mainMenu.rightMenuItem =  &speedMenu;
+    speedMenu.rightMenuItem = &speedX;
+    speedX.rightMenuItem =    &speedY;
+    speedY.rightMenuItem =    &speedZ;
+    speedZ.rightMenuItem =    &mainMenu;
+
+    //instantiate and set the default menu. (and i2c address)
+    LCDMenu menu(&mainMenu, address); 
+    
+    while(1){  
+        menu.input(inputDirection::RIGHT);
+        vTaskDelay(2000 / portTICK_PERIOD_MS);
     }
+  
+    // Allocates storage
+    // char *firstLine = (char*)malloc(17 * sizeof(char));
+
+    // while(1){
+    //     // std::string a = "x";
+    //     // a.
+    //     i2c_lcd1602_clear(lcd_info);
+   
+    //     sprintf(firstLine, "X:%d", motorContoller::getX());
+    //     i2c_lcd1602_move_cursor(lcd_info, 0, 0);        
+    //     i2c_lcd1602_write_string(lcd_info,firstLine);
+    //     sprintf(firstLine, "Y:%d", motorContoller::getY());
+    //     i2c_lcd1602_move_cursor(lcd_info, 0, 1);        
+    //     i2c_lcd1602_write_string(lcd_info,firstLine);
+    
+    //     vTaskDelay(100 / portTICK_PERIOD_MS);
+    // }
     
 }
 
@@ -348,11 +345,13 @@ void task3( void * pvParameters ){
 
 void app_main()
 {
+
     gpio_pad_select_gpio(PIN_LED_LIGHT);
     gpio_set_direction(PIN_LED_LIGHT,GPIO_MODE_OUTPUT);
     gpio_set_level(PIN_LED_LIGHT,1);
 
-    i2cDinges();  
+    i2c_master_init();
+
     motorContoller::initPerhepirals();   
     j.addJoystick(stickX);
     j.addJoystick(stickY);
@@ -361,7 +360,7 @@ void app_main()
 
     xTaskCreatePinnedToCore(task1, "motorTask", SPEED_RESOLUTION*5, NULL, 100, NULL,1 );
     xTaskCreatePinnedToCore(task2, "stickTask", 2048, NULL, 1, NULL,0 );
-    xTaskCreatePinnedToCore(task3, "screenTask", 2048, NULL, 2, NULL,0 );
+    xTaskCreatePinnedToCore(task3, "screenTask", 4096, NULL, 2, NULL,0 );
     
 
     while(1){
