@@ -111,19 +111,19 @@ namespace motorContoller{
         if(X.currentSpeed != 0){
             float xStep = SPEED_RESOLUTION/X.currentSpeed;
             for(int i = 0; i<X.currentSpeed; i++){
-                arr[(int)(i*xStep*4)+0] = stepX;
+                arr[((int)(i*xStep)*4)+0] = stepX;
             }
         }
         if(Y.currentSpeed != 0){
             float yStep = SPEED_RESOLUTION/Y.currentSpeed;
             for(int i = 0; i<Y.currentSpeed; i++){
-                arr[(int)(i*yStep*4)+1] = stepY;
+                arr[((int)(i*yStep)*4)+1] = stepY;
             }
         }
         if(Z.currentSpeed != 0){
             float zStep = SPEED_RESOLUTION/Z.currentSpeed;
             for(int i = 0; i<Z.currentSpeed; i++){
-                arr[(int)(i*zStep*4)+2] = stepZ;
+                arr[((int)(i*zStep)*4)+2] = stepZ;
             }
         }
 

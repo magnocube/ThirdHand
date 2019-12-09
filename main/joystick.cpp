@@ -34,7 +34,7 @@ uint32_t Joystick::getRelativeSpeed(){
        if(calibratedPosition > centerPosition + DEATHBAND){
            double per = (double)map(calibratedPosition,centerPosition+deathZone,4096,0,_maxSpeed);
            //return per;
-           return min((1+0.000017*per*per*per),_maxSpeed); //0-500 speed           
+           return min((1+0.000007*per*per*per),_maxSpeed); //0-500 speed           
        } else{
            return 0;
        }
@@ -42,7 +42,7 @@ uint32_t Joystick::getRelativeSpeed(){
        if(calibratedPosition < centerPosition - DEATHBAND){
            double per = (double)map(calibratedPosition,centerPosition-deathZone,0,0,-_maxSpeed);
            //return per;
-           return max((-1 + 0.000017*per*per*per),-_maxSpeed); //0-500 speed  
+           return max((-1 + 0.000007*per*per*per),-_maxSpeed); //0-500 speed  
        } else{
            return 0;
        }

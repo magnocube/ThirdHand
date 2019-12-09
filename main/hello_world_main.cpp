@@ -306,17 +306,19 @@ void task3( void * pvParameters ){ // handles the display
 
     //link the menus
     mainMenu.rightMenuItem =  &speedMenu;
-    speedMenu.rightMenuItem = &speedX;
-    speedX.rightMenuItem =    &speedY;
-    speedY.rightMenuItem =    &speedZ;
+    speedMenu.bottomMenuItem = &speedX;
+    speedX.bottomMenuItem =    &speedY;
+    speedY.bottomMenuItem =    &speedZ;
     speedZ.rightMenuItem =    &mainMenu;
 
     //instantiate and set the default menu. (and i2c address)
     LCDMenu menu(&mainMenu, address); 
     
     while(1){  
+        vTaskDelay(2000 / portTICK_PERIOD_MS);
         menu.input(inputDirection::RIGHT);
         vTaskDelay(2000 / portTICK_PERIOD_MS);
+        menu.input(inputDirection::DOWN);
     }
   
     // Allocates storage

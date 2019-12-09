@@ -40,8 +40,25 @@ void LCDMenu::update(){ // refresh the screen. (to accompensate for updated vari
 }
 void LCDMenu::input(inputDirection input){ // navigate through the structure and then update.
     if(input == inputDirection::RIGHT){
-        i2c_lcd1602_clear(lcd_info);
-        _currentNode = _currentNode->rightMenuItem;
-    }
+        if(_currentNode->rightMenuItem != nullptr){
+            i2c_lcd1602_clear(lcd_info);
+            _currentNode = _currentNode->rightMenuItem;
+        }
+    } else if(input == inputDirection::LEFT){
+        if(_currentNode->leftMenuItem != nullptr){
+            i2c_lcd1602_clear(lcd_info);
+            _currentNode = _currentNode->leftMenuItem;
+        }
+    } else if(input == inputDirection::UP){
+        if(_currentNode->topMenuItem != nullptr){
+            i2c_lcd1602_clear(lcd_info);
+            _currentNode = _currentNode->topMenuItem;
+        }
+    } else if(input == inputDirection::DOWN){
+        if(_currentNode->bottomMenuItem != nullptr){
+            i2c_lcd1602_clear(lcd_info);
+            _currentNode = _currentNode->bottomMenuItem;
+        }
+    } 
     update();
 }
