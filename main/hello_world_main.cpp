@@ -16,6 +16,7 @@
 #include "joystick.h"
 #include "joystickcontroller.h"
 #include "motorController.h"
+#include "servoControl.h"
 
 #include "config.h"
 
@@ -282,7 +283,9 @@ void task1( void * pvParameters ){
     }
 }
 void task2( void * pvParameters ){
-    
+    servoControl servo1;
+    servoControl servo2;
+     
      while(1){
         // std::string a = "x";
         // a.
