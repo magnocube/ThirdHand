@@ -23,6 +23,9 @@
 
 #define STALL_PIN                       (gpio_num_t)0
 
+#define SERVO_1                       (gpio_num_t)26
+#define SERVO_2                       (gpio_num_t)27
+
 #define SPEED_RESOLUTION                4096  //resolution at the cost of memory and responsiveness
 #define MAX_X_SPEED                     512  //WARNING. these speeds are only a indication... there will be some heavy (quadratic) mathematics that determine the real speed
 #define MAX_Y_SPEED                     1024

@@ -31,7 +31,9 @@ extern "C" {
 	void app_main(); 
 }
 
-
+long map2(long x, long in_min, long in_max, long out_min, long out_max) {
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
 
 
 static void i2c_master_init(void)
@@ -286,14 +288,22 @@ void task2( void * pvParameters ){
     servoControl servo1;
     servoControl servo2;
      
+     servo1.attach(SERVO_1,1000,2000,LEDC_CHANNEL_0,LEDC_TIMER_0);
+     servo2.attach(SERVO_2,1000,2000,LEDC_CHANNEL_1,LEDC_TIMER_1);
      while(1){
         // std::string a = "x";
         // a.
-   
+        uint32_t v = stickGrabber->getCalibratedValue();
+        //printf("raw: %d",v);
+        v = map2(v,0,4096,0,180);
+        //printf("   cal: %d\n",v);
+        servo1.write(v);
+        servo2.write(180-v);
+        
         j.updateJoysticks();
         //printf("X: %d,  Y: %d,  Z: %d,  G: %d\n",stickX->getRelativeSpeed(),stickY->getRelativeSpeed(),stickZ->getRelativeSpeed(),stickGrabber->getRelativeSpeed());
         motorContoller::setSpeed(stickX->getRelativeSpeed(),stickY->getRelativeSpeed(),stickZ->getRelativeSpeed());
-        vTaskDelay(25 / portTICK_PERIOD_MS);
+        vTaskDelay(50 / portTICK_PERIOD_MS);
     }
 
 }
