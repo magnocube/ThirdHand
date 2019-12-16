@@ -7,7 +7,10 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-LCDMenu::LCDMenu(MenuStruct *startNode, int32_t address){
+LCDMenu::LCDMenu(){
+//empty    
+}
+void LCDMenu::init(MenuStruct *startNode, int32_t address){
     _currentNode = startNode;
 
      // Set up the SMBus
@@ -26,7 +29,6 @@ LCDMenu::LCDMenu(MenuStruct *startNode, int32_t address){
     ESP_LOGI(TAG, "cursor off");
    
     i2c_lcd1602_set_cursor(lcd_info, false);
-    
 }
 void LCDMenu::setMenuStructure(MenuStruct *m){
 

@@ -307,7 +307,43 @@ void task2( void * pvParameters ){
     }
 
 }
-void task3( void * pvParameters ){ // handles the display   
+
+
+
+LCDMenu menu; // global lcd menu... needs some formatting for cleaner code
+void stickEventHandler(inputDirection input){
+    if(true){
+        menu.input(input);
+    }else{
+        //do nothing
+    }
+}
+
+void app_main()
+{
+
+    gpio_pad_select_gpio(PIN_LED_LIGHT);
+    gpio_set_direction(PIN_LED_LIGHT,GPIO_MODE_OUTPUT);
+    gpio_set_level(PIN_LED_LIGHT,1);
+
+    i2c_master_init();
+
+
+
+    stickX->setEventHandler(stickEventHandler,inputDirection::LEFT,inputDirection::RIGHT);
+    stickY->setEventHandler(stickEventHandler,inputDirection::DOWN,inputDirection::UP);
+    stickZ->setEventHandler(stickEventHandler,inputDirection::LEFT,inputDirection::RIGHT);
+    stickGrabber->setEventHandler(stickEventHandler,inputDirection::DOWN,inputDirection::UP);
+    //z and grabber are still in the ToDo
+
+    motorContoller::initPerhepirals();   
+    j.addJoystick(stickX);
+    j.addJoystick(stickY);
+    j.addJoystick(stickZ);
+    j.addJoystick(stickGrabber);
+
+
+
     int address = 0x27;
     
     //make the menus
@@ -325,63 +361,28 @@ void task3( void * pvParameters ){ // handles the display
     speedZ.rightMenuItem =    &mainMenu;
 
     //instantiate and set the default menu. (and i2c address)
-    LCDMenu menu(&mainMenu, address); 
     
-    //simulate button presses
-    while(1){  
-        vTaskDelay(2000 / portTICK_PERIOD_MS);
-        menu.input(inputDirection::RIGHT);
-        vTaskDelay(2000 / portTICK_PERIOD_MS);
-        menu.input(inputDirection::DOWN);
-    }
-  
-    // Allocates storage
-    // char *firstLine = (char*)malloc(17 * sizeof(char));
-
-    // while(1){
-    //     // std::string a = "x";
-    //     // a.
-    //     i2c_lcd1602_clear(lcd_info);
-   
-    //     sprintf(firstLine, "X:%d", motorContoller::getX());
-    //     i2c_lcd1602_move_cursor(lcd_info, 0, 0);        
-    //     i2c_lcd1602_write_string(lcd_info,firstLine);
-    //     sprintf(firstLine, "Y:%d", motorContoller::getY());
-    //     i2c_lcd1602_move_cursor(lcd_info, 0, 1);        
-    //     i2c_lcd1602_write_string(lcd_info,firstLine);
-    
-    //     vTaskDelay(100 / portTICK_PERIOD_MS);
-    // }
-    
-}
+    menu.init(&mainMenu, address); 
 
 
 
 
 
-void app_main()
-{
 
-    gpio_pad_select_gpio(PIN_LED_LIGHT);
-    gpio_set_direction(PIN_LED_LIGHT,GPIO_MODE_OUTPUT);
-    gpio_set_level(PIN_LED_LIGHT,1);
 
-    i2c_master_init();
 
-    motorContoller::initPerhepirals();   
-    j.addJoystick(stickX);
-    j.addJoystick(stickY);
-    j.addJoystick(stickZ);
-    j.addJoystick(stickGrabber);
+
+
+
 
     xTaskCreatePinnedToCore(task1, "motorTask", SPEED_RESOLUTION*5, NULL, 100, NULL,1 );
-    xTaskCreatePinnedToCore(task2, "stickTask", 2048, NULL, 1, NULL,0 );
-    xTaskCreatePinnedToCore(task3, "screenTask", 4096, NULL, 2, NULL,0 );
-    
+    xTaskCreatePinnedToCore(task2, "stickTask", 2048, NULL, 2, NULL,0 );
+       
 
     while(1){
         
-        //vTaskDelay(10 / portTICK_PERIOD_MS);
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+        //update the displey with some information when the device is not in "menu-mode"
     }
     
 

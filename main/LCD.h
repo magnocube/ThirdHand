@@ -30,7 +30,8 @@ struct MenuStruct{
 
 class LCDMenu{
     public:
-        LCDMenu(MenuStruct *startNode, int32_t address); // set start node and store address i2c
+        LCDMenu(); 
+        void init(MenuStruct *startNode, int32_t address);// set start node and store address i2c
         void update();                      //update the display wit new data
         void input(inputDirection input); //update the inner menu based on the input form the user
         void setMenuStructure(MenuStruct *m);

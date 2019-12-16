@@ -2,6 +2,8 @@
 #include "esp_log.h"
 #include "config.h"
 
+#include "LCD.h"
+
 long map(long x, long in_min, long in_max, long out_min, long out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
@@ -19,6 +21,24 @@ Joystick::Joystick(adc1_channel_t adcChannel,int centerValue,int maxSpeed){
 void Joystick::updatePosition(){
     currentPosition = (adc1_get_raw(_adcChannel)+adc1_get_raw(_adcChannel)+adc1_get_raw(_adcChannel)+adc1_get_raw(_adcChannel))/4;
     calibratedPosition = (int)((currentPosition*2+calibratedPosition*8)/10.0);
+
+    if(currentPosition > centerPosition - 300 && currentPosition < centerPosition + 300){
+        flagEdgeMin = false;
+        flagEdgeMax = false;
+    }
+    if(currentPosition>3500){
+        if(!flagEdgeMax){
+            flagEdgeMax = true;
+            //generate event
+            handleFunction(maxDir);
+        }
+    } else if(currentPosition < 500){
+        if(!flagEdgeMin){
+            flagEdgeMin = true;
+            //generate event
+            handleFunction(minDir);
+        }
+    }
 }
 
 uint32_t Joystick::getValue(){
@@ -48,6 +68,14 @@ uint32_t Joystick::getRelativeSpeed(){
        }
    }
     
+}
+
+
+
+void Joystick::setEventHandler(std::function<void(inputDirection)> callback, inputDirection minEvent, inputDirection maxEvent){
+    handleFunction = callback;
+    minDir = minEvent;
+    maxDir = maxEvent;
 }
 
 
