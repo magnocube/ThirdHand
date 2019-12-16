@@ -34,3 +34,4 @@
 #define SLOWIFIER                       75
 
 #define PIN_LED_LIGHT                   (gpio_num_t)14
+#define PIN_BUTTON                      (gpio_num_t)15

@@ -267,6 +267,19 @@ void i2cDinges(){
 
 
 
+bool isInConfigMode = false;
+uint32_t lastTimeInterrupt = 0;
+void IRAM_ATTR button_isr_handler(void* arg) { //interrupt handler for button
+    uint32_t gpio_num = (uint32_t) arg;
+    uint32_t t =esp_timer_get_time()/1000; 
+    if(t - lastTimeInterrupt >500){
+        lastTimeInterrupt = t;
+        isInConfigMode = !isInConfigMode;
+         gpio_set_level(PIN_LED_LIGHT,!isInConfigMode);
+    }
+    
+    //xQueueSendFromISR(r_settigns.gpio_interrupt_queue, &gpio_num, NULL);
+}
 
 
 
@@ -281,7 +294,12 @@ Joystickcontroller j;
 
 void task1( void * pvParameters ){
     while(1){
-      motorContoller::driveMotors();
+        if(isInConfigMode){
+            vTaskDelay(50 / portTICK_PERIOD_MS);
+        }else{
+             motorContoller::driveMotors();
+        }
+     
     }
 }
 void task2( void * pvParameters ){
@@ -310,14 +328,21 @@ void task2( void * pvParameters ){
 
 
 
+
+
+
+
+
+
 LCDMenu menu; // global lcd menu... needs some formatting for cleaner code
 void stickEventHandler(inputDirection input){
-    if(true){
+    if(isInConfigMode){
         menu.input(input);
     }else{
         //do nothing
     }
 }
+
 
 void app_main()
 {
@@ -355,18 +380,42 @@ void app_main()
 
     //link the menus
     mainMenu.rightMenuItem =  &speedMenu;
-    speedMenu.bottomMenuItem = &speedX;
-    speedX.bottomMenuItem =    &speedY;
-    speedY.bottomMenuItem =    &speedZ;
-    speedZ.rightMenuItem =    &mainMenu;
+    mainMenu.leftMenuItem =  &speedMenu;
 
-    //instantiate and set the default menu. (and i2c address)
-    
+    speedMenu.rightMenuItem =  &mainMenu;
+    speedMenu.leftMenuItem =  &mainMenu;
+    speedMenu.bottomMenuItem = &speedX;
+    speedMenu.topMenuItem = &speedZ;
+
+    speedX.bottomMenuItem =    &speedY;
+    speedX.topMenuItem =    &speedMenu;
+
+    speedY.bottomMenuItem =    &speedZ;
+    speedY.topMenuItem =    &speedX;
+
+    speedZ.bottomMenuItem =    &speedMenu;
+    speedZ.topMenuItem =    &speedY;
+
+    //instantiate and set the default menu. (and i2c address)    
     menu.init(&mainMenu, address); 
 
 
 
 
+    
+
+
+    gpio_pad_select_gpio((gpio_num_t)PIN_BUTTON);
+		// set the correct direction
+	gpio_set_direction((gpio_num_t)PIN_BUTTON, GPIO_MODE_INPUT); // -> already happens in main.cpp to read initial status. this is just here to make sure it still works after the funtion in main.cpp is removed
+	// enable interrupt on falling (1->0) edge for button pin
+	gpio_set_intr_type((gpio_num_t)PIN_BUTTON, GPIO_INTR_NEGEDGE);	
+	// install ISR service with default configuration
+	gpio_install_isr_service(0);	//default
+    //set pullup
+    gpio_pad_pullup(PIN_BUTTON);
+	// attach the interrupt service routine
+	gpio_isr_handler_add((gpio_num_t)PIN_BUTTON, button_isr_handler, NULL);
 
 
 
@@ -383,6 +432,9 @@ void app_main()
         
         vTaskDelay(100 / portTICK_PERIOD_MS);
         //update the displey with some information when the device is not in "menu-mode"
+        // if(!isInConfigMode){
+        //     menu.update();
+        // }
     }
     
 
