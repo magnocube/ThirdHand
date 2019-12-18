@@ -16,6 +16,7 @@
 #include "joystick.h"
 #include "joystickcontroller.h"
 #include "motorController.h"
+#include "singleController.h"
 #include "servoControl.h"
 
 #include "config.h"
@@ -298,6 +299,7 @@ void task1( void * pvParameters ){
             vTaskDelay(50 / portTICK_PERIOD_MS);
         }else{
              motorContoller::driveMotors();
+             //singleController::driveMotors();
         }
      
     }
@@ -306,8 +308,8 @@ void task2( void * pvParameters ){
     servoControl servo1;
     servoControl servo2;
      
-     servo1.attach(SERVO_1,1000,2000,LEDC_CHANNEL_0,LEDC_TIMER_0);
-     servo2.attach(SERVO_2,1000,2000,LEDC_CHANNEL_1,LEDC_TIMER_1);
+     servo1.attach(SERVO_1,500,2500,LEDC_CHANNEL_0,LEDC_TIMER_0);
+     servo2.attach(SERVO_2,500,2500,LEDC_CHANNEL_1,LEDC_TIMER_1);
      while(1){
         // std::string a = "x";
         // a.
@@ -321,6 +323,7 @@ void task2( void * pvParameters ){
         j.updateJoysticks();
         //printf("X: %d,  Y: %d,  Z: %d,  G: %d\n",stickX->getRelativeSpeed(),stickY->getRelativeSpeed(),stickZ->getRelativeSpeed(),stickGrabber->getRelativeSpeed());
         motorContoller::setSpeed(stickX->getRelativeSpeed(),stickY->getRelativeSpeed(),stickZ->getRelativeSpeed());
+        //singleController::setSpeed(stickX->getRelativeSpeed(),stickY->getRelativeSpeed(),stickZ->getRelativeSpeed());
         vTaskDelay(50 / portTICK_PERIOD_MS);
     }
 
@@ -362,6 +365,7 @@ void app_main()
     //z and grabber are still in the ToDo
 
     motorContoller::initPerhepirals();   
+    //singleController::initPerhepirals();
     j.addJoystick(stickX);
     j.addJoystick(stickY);
     j.addJoystick(stickZ);
